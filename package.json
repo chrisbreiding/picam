@@ -1,0 +1,11 @@
+{
+  "name": "picam",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon server.coffee"
+  },
+  "dependencies": {
+    "express": "~4.1.0"
+  }
+}
