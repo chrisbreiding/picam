@@ -7,6 +7,23 @@
 <body>
 
   <h2>Please Log In</h2>
+
+  {{#messages}}
+
+    {{#incorrect_password}}
+      <p class="error">Incorrect password, please try again</p>
+    {{/incorrect_password}}
+
+    {{#must_login}}
+      <p class="error">You must log in to view any content</p>
+    {{/must_login}}
+
+    {{#logout_success}}
+      <p class="info">You have successfully logged out</p>
+    {{/logout_success}}
+
+  {{/messages}}
+
   <form action="/login" method="POST">
     <input type="password" name="password">
     <button type="submit">Log In</button>

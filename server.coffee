@@ -4,8 +4,9 @@ engines = require 'consolidate'
 bodyParser = require 'body-parser'
 cookieParser = require 'cookie-parser'
 session = require 'express-session'
+flash = require 'express-flash'
 _ = require 'lodash'
-secrets = require '../secrets'
+config = require '../config'
 
 anauthenticatedPaths = ['/login', '/logout']
 
@@ -14,11 +15,13 @@ app.engine 'html', engines.hogan
 app.set 'view engine', 'html'
 app.use bodyParser()
 app.use cookieParser()
-app.use session secret: secrets.sessionSecret
+app.use session secret: config.sessionSecret
+app.use flash()
 app.use (req, res, next)->
   if _.contains(anauthenticatedPaths, req.path) or req.session.authenticated
     next()
   else
+    req.flash 'must_login', true
     res.redirect '/login'
 
 app.get '/', (req, res)->
@@ -31,20 +34,22 @@ app.get '/login', (req, res)->
     res.render 'login'
 
 app.post '/login', (req, res)->
-  if req.body.password and req.body.password is secrets.password
+  if req.body.password and req.body.password is config.password
     req.session.authenticated = true
     res.redirect '/'
   else
+    req.flash 'incorrect_password', true
     res.redirect '/login'
 
 app.get '/logout', (req, res)->
   req.session.authenticated = false
+  req.flash 'logout_success', true
   res.redirect '/login'
 
 app.get '/stream', (req, res)->
   options =
-    host:    '10.0.1.52'
-    port:    8081
+    host:    config.stream.host
+    port:    config.stream.port
     path:    '/'
     method:  'GET'
     headers: req.headers
