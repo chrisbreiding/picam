@@ -1,5 +1,6 @@
 http = require 'http'
 express = require 'express'
+engines = require 'consolidate'
 bodyParser = require 'body-parser'
 cookieParser = require 'cookie-parser'
 session = require 'express-session'
@@ -9,6 +10,8 @@ secrets = require '../secrets'
 anauthenticatedPaths = ['/login', '/logout']
 
 app = express()
+app.engine 'html', engines.hogan
+app.set 'view engine', 'html'
 app.use bodyParser()
 app.use cookieParser()
 app.use session secret: secrets.sessionSecret
@@ -19,13 +22,13 @@ app.use (req, res, next)->
     res.redirect '/login'
 
 app.get '/', (req, res)->
-  res.sendfile "#{__dirname}/public/index.html"
+  res.render 'index'
 
 app.get '/login', (req, res)->
   if req.session.authenticated
     res.redirect '/'
   else
-    res.sendfile "#{__dirname}/public/login.html"
+    res.render 'login'
 
 app.post '/login', (req, res)->
   if req.body.password and req.body.password is secrets.password
