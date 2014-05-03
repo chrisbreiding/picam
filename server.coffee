@@ -1,7 +1,42 @@
 http = require 'http'
 express = require 'express'
+bodyParser = require 'body-parser'
+cookieParser = require 'cookie-parser'
+session = require 'express-session'
+_ = require 'lodash'
+secrets = require '../secrets'
+
+anauthenticatedPaths = ['/login', '/logout']
 
 app = express()
+app.use bodyParser()
+app.use cookieParser()
+app.use session secret: secrets.sessionSecret
+app.use (req, res, next)->
+  if _.contains(anauthenticatedPaths, req.path) or req.session.authenticated
+    next()
+  else
+    res.redirect '/login'
+
+app.get '/', (req, res)->
+  res.sendfile "#{__dirname}/public/index.html"
+
+app.get '/login', (req, res)->
+  if req.session.authenticated
+    res.redirect '/'
+  else
+    res.sendfile "#{__dirname}/public/login.html"
+
+app.post '/login', (req, res)->
+  if req.body.password and req.body.password is secrets.password
+    req.session.authenticated = true
+    res.redirect '/'
+  else
+    res.redirect '/login'
+
+app.get '/logout', (req, res)->
+  req.session.authenticated = false
+  res.redirect '/login'
 
 app.get '/stream', (req, res)->
   options =
