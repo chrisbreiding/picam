@@ -3,31 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <title>Login | PiCam</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="header">
+    <h1>RubyCam</h1>
+  </div>
+  <div class="main-content">
+    <h2>Enter your password</h2>
 
-  <h2>Please Log In</h2>
+    {{#messages}}
 
-  {{#messages}}
+      {{#incorrect_password}}
+        <p class="error">Incorrect password, please try again</p>
+      {{/incorrect_password}}
 
-    {{#incorrect_password}}
-      <p class="error">Incorrect password, please try again</p>
-    {{/incorrect_password}}
+      {{#must_login}}
+        <p class="error">You must log in to view any content</p>
+      {{/must_login}}
 
-    {{#must_login}}
-      <p class="error">You must log in to view any content</p>
-    {{/must_login}}
+      {{#logout_success}}
+        <p class="info">You have successfully logged out</p>
+      {{/logout_success}}
 
-    {{#logout_success}}
-      <p class="info">You have successfully logged out</p>
-    {{/logout_success}}
+    {{/messages}}
 
-  {{/messages}}
-
-  <form action="/login" method="POST">
-    <input type="password" name="password">
-    <button type="submit">Log In</button>
-  </form>
+    <form action="/login" method="POST">
+      <input type="password" name="password">
+      <button type="submit">Log In</button>
+    </form>
+  </div>
 
 </body>
 </html>

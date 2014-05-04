@@ -17,6 +17,7 @@ app.use bodyParser()
 app.use cookieParser()
 app.use session secret: config.sessionSecret
 app.use flash()
+app.use express.static("#{__dirname}/public")
 app.use (req, res, next)->
   if _.contains(anauthenticatedPaths, req.path) or req.session.authenticated
     next()
