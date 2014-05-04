@@ -65,6 +65,14 @@ button:hover {
   background: #C0AD1A;
 }
 
+.camera {
+  border: #2A2B2E solid 20px;
+}
+
+.error {
+  color: red;
+}
+
 input {
   height: 25px;
   width: 20%;
@@ -89,5 +97,19 @@ input {
 
 h2 {
   font-size: 25px;
+}
+
+.logout {
+  float: right;
+  margin-right: 10px;
+}
+
+.logout a {
+  color:#2A2B2E ;
+  text-decoration: none;
+}
+
+.logout a:hover {
+  color: #C0AD1A;
 }
 
