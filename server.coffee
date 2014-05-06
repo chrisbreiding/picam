@@ -26,13 +26,13 @@ app.use (req, res, next)->
     res.redirect '/login'
 
 app.get '/', (req, res)->
-  res.render 'index'
+  res.render 'index', title: config.title
 
 app.get '/login', (req, res)->
   if req.session.authenticated
     res.redirect '/'
   else
-    res.render 'login'
+    res.render 'login', title: config.title
 
 app.post '/login', (req, res)->
   if req.body.password and req.body.password is config.password
