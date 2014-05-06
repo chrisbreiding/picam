@@ -8,7 +8,7 @@ flash = require 'express-flash'
 _ = require 'lodash'
 config = require '../config'
 
-anauthenticatedPaths = ['/login', '/logout']
+unauthenticatedPaths = ['/login', '/logout']
 
 app = express()
 app.engine 'html', engines.hogan
@@ -19,7 +19,7 @@ app.use session secret: config.sessionSecret
 app.use flash()
 app.use express.static("#{__dirname}/public")
 app.use (req, res, next)->
-  if _.contains(anauthenticatedPaths, req.path) or req.session.authenticated
+  if _.contains(unauthenticatedPaths, req.path) or req.session.authenticated
     next()
   else
     req.flash 'must_login', true
