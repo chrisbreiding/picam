@@ -3,5 +3,5 @@ node_modules
 tmp
 *.log
 *.js
-db
+db/**/
 *.map
