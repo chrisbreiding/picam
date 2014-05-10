@@ -4,6 +4,7 @@ engines = require 'consolidate'
 bodyParser = require 'body-parser'
 cookieParser = require 'cookie-parser'
 session = require 'express-session'
+LevelStore = require('./level-store')(session)
 flash = require 'express-flash'
 _ = require 'lodash'
 config = require '../config'
@@ -15,7 +16,9 @@ app.engine 'html', engines.hogan
 app.set 'view engine', 'html'
 app.use bodyParser()
 app.use cookieParser()
-app.use session secret: config.sessionSecret
+app.use session
+  secret: config.sessionSecret
+  store: new LevelStore()
 app.use flash()
 app.use express.static("#{__dirname}/public")
 app.use (req, res, next)->
